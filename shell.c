@@ -69,3 +69,23 @@ int shell_cd(char **input)
     }
     return 1;
 }
+
+/**
+ * Show the help page of implemented shell commands
+ * @param input: string array of the command line input
+ * @return 1 if it is successful
+ */
+int shell_help(char **input)
+{
+    printf("\n=========================================================\n");
+    printf("Welcome to the c-shell help page!\n\n");
+    printf("Here are the current available built in commands:\n");
+    printf("cd [path] : Change directory to the specified path\n");
+    printf("help : Help page for built in descriptions\n");
+    printf("treedir : List all the folders and files in your current directory in a tree format\n");
+    printf("exit : Exit the c-shell\n\n");
+
+    printf("Fyi, other unix builtin commands will still be available (e.g. ls, pwd, cat, etc.)\n\n");
+
+    return 1;
+}
