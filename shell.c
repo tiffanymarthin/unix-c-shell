@@ -107,3 +107,32 @@ int shell_treedir(char **input)
     system("treedir");
     return 1;
 }
+
+/***
+ **  Wrapper of fork(). Checks for fork errors, quits on error. 
+ **/
+pid_t Fork(void)
+{
+    pid_t pid;
+    if ((pid = fork()) < 0)
+    {
+        fprintf(stderr, "%s: %s\n", "fork error", strerror(errno));
+        exit(0);
+    }
+    return pid;
+}
+
+/***
+ ** Wrapper of fgets. Checks and quits on Unix error. 
+ ** Read n characters from FILE into pointer
+ **/
+char *Fgets(char *ptr, int n, FILE *stream)
+{
+    char *rptr;
+    if (((rptr = fgets(ptr, n, stream)) == NULL) && ferror(stream))
+    {
+        fprintf(stderr, "%s\n", "fgets error");
+        exit(0);
+    }
+    return rptr;
+}
