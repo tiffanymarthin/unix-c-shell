@@ -16,3 +16,28 @@ int shell_exit(char **input);
 int shell_treedir(char **input);
 
 int shell_launch(char **argv);
+
+// Command names
+char *command[] = {"cd", "help", "exit", "treedir"};
+
+// Command function pointers
+int (*command_functions[])(char **) = {&shell_cd, &shell_help, &shell_exit, &shell_treedir};
+
+// Count the number of builtin commands
+int shell_command_count()
+{
+    return sizeof(command) / sizeof(*command);
+}
+
+/**
+ * Welcome message of the ksea shell
+ */
+void welcomeMessage()
+{
+    printf("\n=========================================================\n");
+    printf("\tSimple C Shell Implementation\n");
+    printf("\tAvailable commands: cd, help, exit, treedir\n");
+    printf("\tType 'help' to see command descriptions\n");
+    printf("=========================================================\n");
+    printf("\n\n");
+}
