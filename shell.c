@@ -89,3 +89,21 @@ int shell_help(char **input)
 
     return 1;
 }
+
+/**
+ * Exits the shell
+ */
+int shell_exit(char **input)
+{
+    return 0;
+}
+
+/**
+ * Show the tree directory of the current directory
+ * Program needs to be copied from another repo (directory-tree)
+ */
+int shell_treedir(char **input)
+{
+    system("treedir");
+    return 1;
+}
