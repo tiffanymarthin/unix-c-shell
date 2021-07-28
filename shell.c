@@ -41,3 +41,31 @@ void welcomeMessage()
     printf("=========================================================\n");
     printf("\n\n");
 }
+
+/**
+ * Implementing the builtin commands
+ */
+
+/**
+ * Change directory command
+ * If no path specified, it will go to home directory
+ * @param input: string array of the command line input
+ * @return 1 if it is successful, -1 otherwise
+ */
+int shell_cd(char **input)
+{
+    if (input[1] == NULL)
+    {
+        chdir(getenv("HOME"));
+        return 1;
+    }
+    else
+    {
+        if (chdir(input[1]) == -1)
+        {
+            printf(" %s: Directory is not found\n", input[1]);
+            return -1;
+        }
+    }
+    return 1;
+}
