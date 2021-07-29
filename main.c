@@ -7,11 +7,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include "shell.h"
-
-#define MAXARGS 5
-#define MAXLINE 80
-// Change this to desired shell name
-#define SHELL_NAME "tmarthin"
+#include "shell_commands.h"
 
 void pink()
 {
