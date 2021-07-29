@@ -5,6 +5,8 @@
 #include <errno.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+
 #define MAXARGS 5
 #define MAXLINE 80
 
