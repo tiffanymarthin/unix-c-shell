@@ -10,6 +10,9 @@
 #define MAXARGS 5
 #define MAXLINE 80
 
+// Change this to desired shell name
+#define SHELL_NAME "tmarthin"
+
 // Declare functions for builtin shell commands:
 // Use int types to simplify debugging and while loop
 int shell_cd(char **input);
@@ -36,12 +39,11 @@ int shell_command_count()
  */
 void welcomeMessage()
 {
-    printf("\n=========================================================\n");
+    printf("\n=========================================================\n\n");
     printf("\tSimple C Shell Implementation\n");
     printf("\tAvailable commands: cd, help, exit, treedir\n");
-    printf("\tType 'help' to see command descriptions\n");
-    printf("=========================================================\n");
-    printf("\n\n");
+    printf("\tType 'help' to see command descriptions\n\n");
+    printf("=========================================================\n\n");
 }
 
 /**
@@ -79,15 +81,16 @@ int shell_cd(char **input)
  */
 int shell_help(char **input)
 {
-    printf("\n=========================================================\n");
-    printf("Welcome to the c-shell help page!\n\n");
-    printf("Here are the current available built in commands:\n");
+    printf("\n=========================================================\n\n");
+    printf("Welcome to the %s-shell help page!\n\n", SHELL_NAME);
+    printf("Here are the current available built-in commands:\n");
     printf("cd [path] : Change directory to the specified path\n");
     printf("help : Help page for built in descriptions\n");
     printf("treedir : List all the folders and files in your current directory in a tree format\n");
-    printf("exit : Exit the c-shell\n\n");
+    printf("exit : Exit the %s-shell\n\n", SHELL_NAME);
 
-    printf("Fyi, other unix builtin commands will still be available (e.g. ls, pwd, cat, etc.)\n\n");
+    printf("Note: Other Unix /bin/ commands will still be available (e.g. ls, pwd, cat, etc.)\n");
+    printf("\n=========================================================\n\n");
 
     return 1;
 }
@@ -97,6 +100,7 @@ int shell_help(char **input)
  */
 int shell_exit(char **input)
 {
+    printf("Thank you for trying it out!\n\n");
     return 0;
 }
 
@@ -189,6 +193,35 @@ int builtin_command(char **argv)
 }
 
 /**
+ * Splits the commandline input into string of arrays
+ * The maximum argument is currently set as 5
+ * @param cmdline: input from the command line
+ * @param argv: array of arguments, to save the split cmdline
+ */
+#define TOK_DELIM " \r\n\t"
+void split_buf(char *cmdline, char **argv)
+{
+    int i = 0;
+    char *token;
+
+    token = strtok_r(cmdline, TOK_DELIM, &cmdline);
+
+    while (token != NULL)
+    {
+        argv[i++] = token;
+
+        if (i >= MAXARGS)
+        {
+            fprintf(stderr, "Your inputs are too long, maximum 4 arguments\n");
+            exit(EXIT_FAILURE);
+        }
+        token = strtok_r(NULL, TOK_DELIM, &cmdline);
+    }
+    argv[i] = NULL;
+    return;
+}
+
+/**
  * Evaluates and parses the commandline input
  * Run shell_launch() if commandline input is not in built-in commands list
  * @param cmdline: input arguments from user
@@ -212,4 +245,46 @@ int eval(char *cmdline)
     {
         shell_launch(argv);
     }
+}
+
+void pink()
+{
+    printf("\033[1;95m");
+}
+
+void purple()
+{
+    printf("\033[1;34m");
+}
+
+void reset()
+{
+    printf("\033[0m");
+}
+
+int main()
+{
+    char cmdline[MAXLINE];
+    int status = 1;
+    char cwd[1024]; // current working directory
+
+    welcomeMessage();
+    do
+    {
+        // Prints shell prompt
+        getcwd(cwd, sizeof(cwd));
+        pink();
+        printf("%s-shell:", SHELL_NAME);
+        purple();
+        printf("~%s", cwd);
+        reset();
+        printf("> ");
+
+        Fgets(cmdline, MAXLINE, stdin);
+        if (feof(stdin))
+        {
+            exit(0);
+        }
+        status = eval(cmdline);
+    } while (status);
 }
