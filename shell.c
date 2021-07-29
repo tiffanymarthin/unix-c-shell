@@ -6,21 +6,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-
-#define MAXARGS 5
-#define MAXLINE 80
-
-// Change this to desired shell name
-#define SHELL_NAME "tmarthin"
-
-// Declare functions for builtin shell commands:
-// Use int types to simplify debugging and while loop
-int shell_cd(char **input);
-int shell_help(char **input);
-int shell_exit(char **input);
-int shell_treedir(char **input);
-
-int shell_launch(char **argv);
+#include "shell.h"
 
 // Command names
 char *command[] = {"cd", "help", "exit", "treedir"};
@@ -245,46 +231,4 @@ int eval(char *cmdline)
     {
         shell_launch(argv);
     }
-}
-
-void pink()
-{
-    printf("\033[1;95m");
-}
-
-void purple()
-{
-    printf("\033[1;34m");
-}
-
-void reset()
-{
-    printf("\033[0m");
-}
-
-int main()
-{
-    char cmdline[MAXLINE];
-    int status = 1;
-    char cwd[1024]; // current working directory
-
-    welcomeMessage();
-    do
-    {
-        // Prints shell prompt
-        getcwd(cwd, sizeof(cwd));
-        pink();
-        printf("%s-shell:", SHELL_NAME);
-        purple();
-        printf("~%s", cwd);
-        reset();
-        printf("> ");
-
-        Fgets(cmdline, MAXLINE, stdin);
-        if (feof(stdin))
-        {
-            exit(0);
-        }
-        status = eval(cmdline);
-    } while (status);
 }
