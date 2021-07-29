@@ -138,3 +138,52 @@ char *Fgets(char *ptr, int n, FILE *stream)
     }
     return rptr;
 }
+
+/**
+ * Launches a child process to handle commands that are not in built-in commands
+ * Used execvp to run Unix commands that are inside /bin/
+ */
+int shell_launch(char **argv)
+{
+    pid_t pid, wpid;
+    int status;
+
+    pid = Fork();
+    if (pid == 0)
+    {
+        // Child process
+        if (execvp(argv[0], argv) == -1)
+        {
+            fprintf(stderr, "Command '%s' is not found\n", argv[0]);
+        }
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        // Parent process
+        do
+        {
+            wpid = waitpid(pid, &status, WUNTRACED);
+        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    }
+    return 1;
+}
+
+/**
+ * Checks if the input command is in the built-in commands list
+ * @param argv: input command from user
+ * @return -1 if command is not in the built-in commands list
+ */
+int builtin_command(char **argv)
+{
+    int n = shell_command_count();
+    for (int i = 0; i < n; i++)
+    {
+        int res = strcmp(command[i], argv[0]);
+        if (res == 0)
+        {
+            return (*command_functions[i])(argv);
+        }
+    }
+    return -1;
+}
