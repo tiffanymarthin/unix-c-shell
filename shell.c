@@ -187,3 +187,29 @@ int builtin_command(char **argv)
     }
     return -1;
 }
+
+/**
+ * Evaluates and parses the commandline input
+ * Run shell_launch() if commandline input is not in built-in commands list
+ * @param cmdline: input arguments from user
+ * @return 1 when argument is valid or empty (to continue with the program)
+ */
+int eval(char *cmdline)
+{
+    char *argv[MAXARGS];
+    char buf[MAXLINE];
+    pid_t pid; // Process id
+
+    strcpy(buf, cmdline);
+    split_buf(buf, argv);
+
+    // Ignore empty lines, continue program
+    if (argv[0] == NULL)
+    {
+        return 1;
+    }
+    if (builtin_command(argv) == -1)
+    {
+        shell_launch(argv);
+    }
+}
