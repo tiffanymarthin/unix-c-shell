@@ -20,6 +20,8 @@ Important Note
 * Git clone the repo
 * Copy 'treedir' executable file from the repo to your `/bin/` folder (need admin access)
 `sudo cp treedir /usr/local/bin`
+* In "shell.h", change the shell-name to your preferred shell name on line 15:
+    * `#define SHELL_NAME "tmarthin"`
 * Type `make run` (see Makefile for more details)
 * Once inside the personalized shell:
 ```
