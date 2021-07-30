@@ -37,4 +37,5 @@ exit
 * Run `make clean` to remove the "shell" executable file
 
 ## Sample Output
-
+<img src="https://github.com/tiffanymarthin/unix-c-shell/blob/main/unixshell_ss1.png" width="400"/>
+<img src="https://github.com/tiffanymarthin/unix-c-shell/blob/main/unixshell_ss2.png" width="400"/>
